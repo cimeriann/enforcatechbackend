@@ -28,6 +28,16 @@ const UserSchema = new mongoose.Schema({
 	enum: ['user', 'admin'],
 	default: 'user',
   },
+  appliedJobs: [
+	{
+	  type: mongoose.Schema.Types.ObjectId,
+	  ref: 'Job',
+	},
+  ],
+  profilePicture: {
+	type: String,
+  },
+
   resetPasswordToken: String,
   resetPasswordExpire: Date,
 });
