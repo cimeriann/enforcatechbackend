@@ -45,12 +45,22 @@ const jobSchema = z.object({
   user: z.string().optional(),
 });
 
-export const jobValidator = async (req, res, next) => {
-  try {
-    const jobData = jobSchema.parse(req.body);
+const jobUpdateSchema = z.object({
+  companyName: z.string().optional(),
+  position: z.string().optional(),
+  location: z.string().optional(),
+  salary: z.number().optional(),
+  description: z.string().optional(),
+  status: z.enum(["pending", "interview", "rejected", "accepted"]).optional(),
+  user: z.string().optional(),
+});
 
-    if (!jobData) {
-      const validationErrors = jobSchema.errors.error.map((error) => ({
+export const jobUpdateValidator = async (req, res, next) => {
+  try {
+    const jobUpdateData = jobUpdateSchema.parse(req.body);
+
+    if (!jobUpdateData) {
+      const validationErrors = jobUpdateSchema.errors.error.map((err) => ({
         field: err.path[0],
         message: err.message,
       }));
@@ -58,11 +68,31 @@ export const jobValidator = async (req, res, next) => {
         message: "Validation Error",
         errors: validationErrors,
       });
-    };
-	req.validatedJob = jobData.data;
-	next();
+    }
+    req.validatedJob = jobUpdateData;
+    next();
   } catch (error) {
-    // errorResponse(res, StatusCodes.BAD_REQUEST, error.errors);
-	next(error);
+    next(error);
+  }
+};
+export const jobValidator = async (req, res, next) => {
+  try {
+    const jobData = jobSchema.parse(req.body);
+    jobData.user = req.user.id;
+    if (!jobData) {
+      const validationErrors = jobSchema.errors.error.map((err) => ({
+        field: err.path[0],
+        message: err.message,
+      }));
+      errorResponse(res, StatusCodes.BAD_REQUEST, {
+        message: "Validation Error",
+        errors: validationErrors,
+      });
+    }
+    req.validatedJob = jobData;
+    next();
+  } catch (error) {
+    errorResponse(res, StatusCodes.BAD_REQUEST, error.errors);
+    next(error);
   }
 };
