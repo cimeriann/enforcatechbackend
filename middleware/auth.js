@@ -1,5 +1,5 @@
-import { errorResponse } from "../utils/responses";
-import { isTokenValid } from "../utils/auth";
+import { errorResponse } from "../utils/responses.js";
+import { isTokenValid } from "../utils/auth.js";
 import { StatusCodes } from "http-status-codes";
 
 const isLoggedIn = (res, req, next) => {
