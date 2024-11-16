@@ -43,6 +43,9 @@ const userSchema = z.object({
       invalid_type_error: "Role must be either 'admin' or 'user'",
     })
     .optional(),
+  appliedJobs: z.
+  array(z.object).optional(),
+  profilePicture: z.string().optional(),
 });
 
 const loginSchema = z.object({
@@ -117,25 +120,25 @@ export const loginValidation = async (req, res, next) => {
 };
 
 export const resetPasswordValidation = async (req, res, next) => {
-	  try {
-	const resetPasswordData = resetPasswordSchema.safeParse(req.body);
+  try {
+    const resetPasswordData = resetPasswordSchema.safeParse(req.body);
 
-	if (!resetPasswordData.success) {
-	  const validationErrors = resetPasswordData.error.errors.map((err) => ({
-		field: err.path[0],
-		message: err.message,
-	  }));
+    if (!resetPasswordData.success) {
+      const validationErrors = resetPasswordData.error.errors.map((err) => ({
+        field: err.path[0],
+        message: err.message,
+      }));
 
-	  return errorResponse(res, StatusCodes.BAD_REQUEST, {
-		message: "Validation Failed, Try again!",
-		validationErrors,
-	  });
-	}
+      return errorResponse(res, StatusCodes.BAD_REQUEST, {
+        message: "Validation Failed, Try again!",
+        validationErrors,
+      });
+    }
 
-	req.validatedUser = resetPasswordData.data; //Controller has access to validated User
-	next();
+    req.validatedUser = resetPasswordData.data; //Controller has access to validated User
+    next();
   } catch (error) {
-	console.log(error);
-	next(error);
+    console.log(error);
+    next(error);
   }
 };
