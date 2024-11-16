@@ -4,7 +4,8 @@ dotenv.config();
 import connectDb from './config/db.js';
 import logger from './utils/logger.js';
 import errorHandler from './middleware/errorHandler.js';
-import authRouter from './routes/auth.js';
+import authRouter from './routes/auth.routes.js';
+import jobRouter from './routes/job.routes.js';
 
 const app = express();
 const PORT = process.env.PORT || 4000;
@@ -22,6 +23,7 @@ app.get('/', (req, res) => {
 	res.send(`Enforcatech Backend API`);
 });
 app.use('/api/auth', authRouter);
+app.use('/api/jobs', jobRouter);
 
 
 // start server
