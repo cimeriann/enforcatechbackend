@@ -63,13 +63,6 @@ const loginSchema = z.object({
 });
 
 const resetPasswordSchema = z.object({
-  email: z
-    .string({
-      required_error: "Email is required",
-    })
-    .email({ message: "Invalid email address" })
-    .trim()
-    .toLowerCase(),
   newPassword: z
     .string({})
     .min(6, { message: "Password must be at least 6 characters long" })
@@ -118,7 +111,7 @@ export const loginValidation = async (req, res, next) => {
     req.validatedUser = loginData.data; //Controller has access to validated User
     next();
   } catch (error) {
-    console.log(error);
+    // console.log(error);
     next(error);
   }
 };
