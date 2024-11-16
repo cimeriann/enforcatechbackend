@@ -3,7 +3,8 @@ import { successResponse, errorResponse } from '../utils/responses.js';
 import { comparePassword, createAccessToken, generateHashedPassword } from '../utils/auth.js';
 import logger from '../utils/logger.js';
 import { StatusCodes } from 'http-status-codes';
-
+import { isTokenValid } from '../utils/auth.js';
+import BlackListSchema from '../models/Blacklist.js';
 export const register = async (req, res, next) =>{
 	try {
 		logger.info("START: Register Account Service")
@@ -95,4 +96,30 @@ export const resetPassword = async (req, res, next) =>{
 		next(error);
 	}
 
+};
+
+export const logout = async (req, res, next) =>{
+	try {
+		logger.info("START: Logout Service");
+		const token = req.headers['authorization'].split(' ')[1];
+
+		if(!token){
+			return errorResponse(res, StatusCodes.BAD_REQUEST, "Token not provided");
+		};
+		const isBlackListed = await BlackListSchema.findOne({token});
+
+		if(isBlackListed){
+			return errorResponse(res, StatusCodes.BAD_REQUEST, "Token already blacklisted");
+		};
+		const blackListedToken = await BlackListSchema.create({
+			token,
+			expires: new Date()
+		});
+		res.setHeader('Authorization', '');
+		logger.info("END: Logout Service");
+		return successResponse(res, StatusCodes.OK, "Logout successful");
+	} catch (error) {
+		logger.error(error.message);
+		next(error);
+	}
 };
