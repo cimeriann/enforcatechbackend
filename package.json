@@ -1,0 +1,33 @@
+{
+  "name": "enforcatechbackend",
+  "version": "1.0.0",
+  "description": "enforcatech backend api",
+  "type": "module",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "start:dev": "nodemon server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/cimeriann/enforcatechbackend.git"
+  },
+  "author": "Olayinka",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/cimeriann/enforcatechbackend/issues"
+  },
+  "homepage": "https://github.com/cimeriann/enforcatechbackend#readme",
+  "dependencies": {
+    "bcryptjs": "^2.4.3",
+    "cors": "^2.8.5",
+    "dotenv": "^16.4.5",
+    "express": "^4.21.1",
+    "http-status-codes": "^2.3.0",
+    "jsonwebtoken": "^9.0.2",
+    "mongoose": "^8.8.1",
+    "nodemon": "^3.1.7",
+    "winston": "^3.17.0",
+    "zod": "^3.23.8"
+  }
+}
