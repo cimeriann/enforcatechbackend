@@ -6,9 +6,9 @@ const { combine, timestamp, colorize, printf} = format;
 addColors({
 	  error: 'red',
 	  warn: 'yellow',
-	  info: 'green',
+	  info: 'blue',
 	  http: 'magenta',
-	  debug: 'blue'
+	  debug: 'green'
 });
 
 const logFormat = printf(
